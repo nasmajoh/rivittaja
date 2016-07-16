@@ -1,0 +1,95 @@
+package rivittaja.main;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.logging.Logger;
+
+public class Rivittaja {
+
+	private static final Logger LOGGER = Logger.getLogger(Rivittaja.class.getName());
+	private static String inputEncoding = System.getProperty("file.encoding"); // Windows-1252;
+	private static String outputFilename;
+	private static int rowsToExpand;
+	private static int rowsToSkip;
+
+	public static void main(String[] args) throws IOException {
+
+		int rowCount = 0;
+
+		if (args.length < 2 || args[0].equals("-help")) {
+			printUsage();
+			System.exit(4);
+		}
+
+		String inputFilename = args[0];
+		rowsToExpand = Integer.parseInt(args[1]);
+		parseOptions(args);
+
+		LOGGER.info("Java runtime is " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor")
+				+ ")");
+		LOGGER.info("Processing input file " + inputFilename);
+		LOGGER.info("Input encoding is " + inputEncoding);
+		LOGGER.info("Rows to add " + rowsToExpand);
+
+		outputFilename = "rivitetty_" + inputFilename;
+		FileWriter fw = new FileWriter(outputFilename);
+		BufferedWriter writer = new BufferedWriter(fw);
+
+		try {
+
+			BufferedReader reader = new BufferedReader(new FileReader(inputFilename));
+			String line;
+			rowCount = 0;
+			while ((line = reader.readLine()) != null) {
+				// process the line.
+				if (rowCount >= rowsToSkip) {
+					writer.write(line);
+					for (int i = 0; i < rowsToExpand; i++) {
+						writer.write(System.getProperty("line.separator"));
+					}
+				}
+				rowCount++;
+			}
+			reader.close();
+		} finally {
+			writer.close();
+			LOGGER.info("Processed " + rowCount + " rows ");
+		}
+
+	}
+
+	private static void parseOptions(String[] args) {
+		try {
+			for (int i = 2; i < args.length;) {
+				String arg = args[i++];
+				if (arg.equalsIgnoreCase("--skipRows") || arg.equalsIgnoreCase("-s"))
+					rowsToSkip = Integer.parseInt(args[i++]);
+			}
+		} catch (RuntimeException e) {
+			StringBuilder sb = new StringBuilder();
+			for (String str : args)
+				sb.append(str + " ");
+			LOGGER.warning("Parsing failed. Input params: " + sb.toString());
+			throw e;
+		}
+	}
+
+	private static void printUsage() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Usage: java -jar rivittaja.jar [inputfile] [numberOfBlankRows] (-s n < to skip n first rows>)\n");
+		System.out.println(sb.toString());
+	}
+
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/Rivittaja/src/rivittaja/main/Rivittaja.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rivittaja.main.Rivittaja"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;S U P P O R T   N O D E   C O O R D I N A T E S.txt&quot; 12 -s 3"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Rivittaja"/>
+</launchConfiguration>

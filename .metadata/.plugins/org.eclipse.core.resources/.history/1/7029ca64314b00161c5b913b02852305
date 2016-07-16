@@ -1,0 +1,10 @@
+package rivittaja.main;
+
+public class Rivittaja {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
